@@ -19,7 +19,7 @@ objectProducts.push(new Product('bathroom','img/bathroom.jpg'));
 objectProducts.push(new Product('boots','img/boots.jpg'));
 objectProducts.push(new Product('breakfast','img/breakfast.jpg'));
 objectProducts.push(new Product('bubblegum','img/bubblegum.jpg'));
-objectProducts.push(new Product('chair','/img/chair.jpg'));
+objectProducts.push(new Product('chair','img/chair.jpg'));
 objectProducts.push(new Product('cthulhu','img/cthulhu.jpg'));
 objectProducts.push(new Product('dog-duck','img/dog-duck.jpg'));
 objectProducts.push(new Product('dragon','img/dragon.jpg'));
@@ -47,6 +47,7 @@ voteTracker.addEventListener('click',handleProductClick);
 
 
 
+
 //generate random product number for objectProducts array
 function generateRandomProduct(){
   return Math.floor(Math.random() * objectProducts.length);
@@ -61,10 +62,9 @@ function renderProducts(){
 
   console.log(product1, product2,product3);
 
-  if(product1.name === product2.name || product1.name === product3.name){
-    product1[generateRandomProduct()];
-  }else if(product2.name === product1.name || product2.name === product3.name){
-    product2[generateRandomProduct()];
+  while (product1 === product2 || product1 === product3 || product2 === product3) {
+    product1 = objectProducts[generateRandomProduct()];
+    product2 = objectProducts[generateRandomProduct()];
   }
 
   image1.src = product1.source;
@@ -101,8 +101,22 @@ function handleProductClick(event){
     roundsOfVoting--;
   }else{
     voteTracker.removeEventListener('click',handleProductClick );
+    let buttonEl = document.getElementById('results-button');
+    buttonEl.addEventListener('click', renderData);
     alert('You Have reached max attempts');
   }
+}
+
+function renderData(event) {
+  // let buttonClicked = event.target.id;
+  objectProducts.forEach(product => {
+    let listItemEl = document.createElement('li');
+    let parentContainer = document.getElementById('results-list');
+    parentContainer.appendChild(listItemEl);
+    listItemEl.innerHTML = `${product.name} had ${product.timesClicked} votes, and was seen ${product.timesShown} times.`;
+    product.timesClicked;
+    product.timesShown;
+  });
 }
 
 //some random text I messed up dssdadsa
