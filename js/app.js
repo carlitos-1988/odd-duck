@@ -105,3 +105,5 @@ function handleProductClick(event){
   }
 }
 
+//some random text I messed up
+
