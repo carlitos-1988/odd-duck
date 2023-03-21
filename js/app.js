@@ -105,5 +105,5 @@ function handleProductClick(event){
   }
 }
 
-//some random text I messed up
+//some random text I messed up dssdadsa
 
