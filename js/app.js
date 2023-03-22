@@ -1,8 +1,12 @@
 'use strict';
 
+
 // array to hold all products
 const objectProducts = [];
-let roundsOfVoting = 25;
+const itemsForChart =[];
+let roundsOfVoting = 5;
+//blank chart Object
+let chartObj = null;
 
 //function constructor for products
 function Product(name, source){
@@ -60,7 +64,7 @@ function renderProducts(){
   let product2 = objectProducts[generateRandomProduct()];
   let product3 = objectProducts[generateRandomProduct()]; //number placed inside bracket is number generated from generate random product function
 
-  console.log(product1, product2,product3);
+  //   console.log(product1, product2,product3);
 
   while (product1 === product2 || product1 === product3 || product2 === product3) {
     product1 = objectProducts[generateRandomProduct()];
@@ -70,14 +74,18 @@ function renderProducts(){
   image1.src = product1.source;
   image1.alt = product1.name;
   product1.timesShown +=1;
+  //adding the items to itemsForChart array for chart usage
+  itemsForChart.push(product1);
 
   image2.src = product2.source;
   image2.alt = product2.name;
   product2.timesShown +=1;
+  itemsForChart.push(product2);
 
   image3.src = product3.source;
   image3.alt = product3.name;
   product3.timesShown +=1;
+  itemsForChart.push(product3);
 
 }
 
@@ -104,9 +112,11 @@ function handleProductClick(event){
     let buttonEl = document.getElementById('results-button');
     buttonEl.addEventListener('click', renderData);
     alert('You Have reached max attempts');
+    chartObj = generateChart();
   }
 }
 
+//render data for the results-list
 function renderData(event) {
   // let buttonClicked = event.target.id;
   objectProducts.forEach(product => {
@@ -119,5 +129,58 @@ function renderData(event) {
   });
 }
 
-//some random text I messed up dssdadsa
+//get the canvas element global scoped
+const canvasElement = document.getElementById('data-display');
+
+
+function generateChart(){
+  let productName =[];
+  let timesShown = [];
+  let timesClicked = [];
+
+  console.log(itemsForChart);
+  itemsForChart.forEach(arrayProduct => {
+    productName.push(arrayProduct.name);
+    timesShown.push(arrayProduct.timesShown);
+    timesClicked.push(arrayProduct.timesClicked);
+  });
+  console.log(productName);
+  console.log(timesShown);
+  console.log(timesClicked);
+  
+  let ctx = new Chart(canvasElement,{
+    type: 'bar',
+    data: {
+      labels: productName, // how can we get the names of our goats??
+      datasets: [{
+        label: 'Times Shown',
+        data: timesShown, // where does this data live?
+        borderWidth: 1
+      }, {
+        label: 'Times Clicked',
+        data: timesClicked, // where does this data live?
+        borderWidth: 1
+      }] // do we have more than 1 dataset?
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  return ctx;
+}
+
+//grab the button element and put in global context
+let buttonElement = document.getElementById('update-chart');
+//event listener function for updating data
+buttonElement.addEventListener('click', function(){
+  generateChart();
+});
+
+
+
 
