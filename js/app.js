@@ -4,7 +4,7 @@
 // array to hold all products
 const objectProducts = [];
 const itemsForChart =[];
-let roundsOfVoting = 5;
+let roundsOfVoting = 25;
 //blank chart Object
 let chartObj = null;
 
