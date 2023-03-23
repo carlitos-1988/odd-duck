@@ -2,9 +2,9 @@
 
 
 // array to hold all products
-const objectProducts = [];
+let objectProducts = [];
 const itemsForChart =[];
-let roundsOfVoting = 25;
+let roundsOfVoting = 5;
 //blank chart Object
 let chartObj = null;
 
@@ -114,6 +114,8 @@ function handleProductClick(event){
     alert('You Have reached max attempts');
     chartObj = generateChart();
   }
+  storeData();
+
 }
 
 //render data for the results-list
@@ -138,15 +140,15 @@ function generateChart(){
   let timesShown = [];
   let timesClicked = [];
 
-  console.log(itemsForChart);
+  // console.log(itemsForChart);
   itemsForChart.forEach(arrayProduct => {
     productName.push(arrayProduct.name);
     timesShown.push(arrayProduct.timesShown);
     timesClicked.push(arrayProduct.timesClicked);
   });
-  console.log(productName);
-  console.log(timesShown);
-  console.log(timesClicked);
+  // console.log(productName);
+  // console.log(timesShown);
+  // console.log(timesClicked);
   
   let ctx = new Chart(canvasElement,{
     type: 'bar',
@@ -181,6 +183,21 @@ buttonElement.addEventListener('click', function(){
   generateChart();
 });
 
+function storeData(){
+  let data = JSON.stringify(objectProducts);
+  localStorage.setItem('productData', data);
+}
 
+function readData(){
+  let data = localStorage.getItem('productData');
+
+  if (data){
+    objectProducts = JSON.parse(data);
+  } else {
+    storeData();
+  }
+}
+
+readData();
 
 
