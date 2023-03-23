@@ -4,7 +4,8 @@
 // array to hold all products
 let objectProducts = [];
 const itemsForChart =[];
-let roundsOfVoting = 5;
+let roundsOfVoting = 25;
+let previousProducts = [];
 //blank chart Object
 let chartObj = null;
 
@@ -59,17 +60,21 @@ function generateRandomProduct(){
 // console.log(generateRandomProduct());
 
 function renderProducts(){
-  //find 3 products to be displayes
-  let product1 = objectProducts[generateRandomProduct()];
-  let product2 = objectProducts[generateRandomProduct()];
-  let product3 = objectProducts[generateRandomProduct()]; //number placed inside bracket is number generated from generate random product function
-
+  let product1, product2, product3;
+  
   //   console.log(product1, product2,product3);
 
-  while (product1 === product2 || product1 === product3 || product2 === product3) {
+  do{
     product1 = objectProducts[generateRandomProduct()];
     product2 = objectProducts[generateRandomProduct()];
-  }
+    product3 = objectProducts[generateRandomProduct()]; //number placed inside bracket is number generated from generate random product function
+  } while (previousProducts.includes(product1) ||
+  previousProducts.includes(product2) ||
+  previousProducts.includes(product3) ||
+  product1 === product2 ||
+  product1 === product3 ||
+  product2 === product3
+  );
 
   image1.src = product1.source;
   image1.alt = product1.name;
@@ -149,7 +154,7 @@ function generateChart(){
   // console.log(productName);
   // console.log(timesShown);
   // console.log(timesClicked);
-  
+
   let ctx = new Chart(canvasElement,{
     type: 'bar',
     data: {
